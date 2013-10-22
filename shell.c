@@ -12,16 +12,20 @@ int main(int argc, char** argv)
     printf("This is a program to take your input and do something awesome with it!");
     char fullinput[100];
     bool whilebreak = true;
+//while loop to continue the program until exit is called.
     while (whilebreak)
       {
         fullinput[100] = '\0';
         printf("\nPlease enter a command>> ");
+//inputs text string from the user.
         fgets(fullinput, 100, stdin);
+//checks input for "exit" and breaks the loop.  Created a whilebreak function to make sure the loop breaks.
         if (!strncmp(fullinput, "exit", 4))
           {
             break;
             whilebreak = false;
           }
+//checks input for "type" and types the contents of the inputted file on the screen.
         else if (!strncmp(fullinput, "type", 4))
           {
             int num = 0;
@@ -52,6 +56,7 @@ int main(int argc, char** argv)
               }
             fclose(fp);
           }
+//checks input for "copy" and copies the contents of the first inputted file to the second inputted file.
         else if (!strncmp(fullinput, "copy", 4))
           {
             int num = 0;
@@ -85,6 +90,7 @@ int main(int argc, char** argv)
             fclose(fp1);
             fclose(fp2);
           }
+//checks input for "delete" and removes the file entirely.
         else if (!strncmp(fullinput, "delete", 6))
           {
             int num = 0;
@@ -117,6 +123,7 @@ int main(int argc, char** argv)
                 printf("Something went wrong.  %s has not been deleted.\n", eachword[1]);
               }
           }
+//assumes the call is an executible program and attempts to run the program.
         else
           {
             int num = 0;
@@ -148,18 +155,19 @@ int main(int argc, char** argv)
                 printf("The program %s will execute now.\n", eachword[0]);
                 pid_t pid = fork();
                 int parentwait;
-                char args[1][1];
-                args[0][0] = '\0';
+//prints an error if something goes wrong with the fork.
                 if (pid < 0)
                   {
                     printf("There was an error with the fork process.  The program is ending now.\n");
                     return;
                   }
+//completes the child function of the fork.
                 else if (pid == 0)
                   {
                     execvp (eachword[0], eachword);
                     exit(0);
                   }
+//makes the parent wait for the child to complete.
                 else
                   {
                     waitpid(-1, NULL, 0);
