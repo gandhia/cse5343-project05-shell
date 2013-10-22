@@ -48,13 +48,20 @@ int main(int argc, char** argv)
             printf("Here are the contents of %s\n", eachword[1]);
             FILE *fp = fopen(eachword[1], "r");
             char ch;
-            ch = getc(fp);
-            while (ch != EOF)
+            if (fp)
               {
-                printf("%c", ch);
                 ch = getc(fp);
+                while (ch != EOF)
+                  {
+                    printf("%c", ch);
+                    ch = getc(fp);
+                  }
+                fclose(fp);
               }
-            fclose(fp);
+            else
+              {
+                printf("The file you have selected does not exist.  Please enter another file unless you want a bunch of blanks on your screen.\n");
+              }
           }
 //checks input for "copy" and copies the contents of the first inputted file to the second inputted file.
         else if (!strncmp(fullinput, "copy", 4))
@@ -80,15 +87,22 @@ int main(int argc, char** argv)
             printf("will be transferred to %s.\nBelow are the contents that will be moved.\n", eachword[2]);
             FILE *fp1 = fopen(eachword[1], "r");
             FILE *fp2 = fopen(eachword[2], "w");
-            char ch=getc(fp1);
-            while (ch != EOF)
+            if (fp1)
               {
-                putc(ch, fp2);
-                printf("%c", ch);
-                ch=getc(fp1);
+                char ch=getc(fp1);
+                while (ch != EOF)
+                  {
+                    putc(ch, fp2);
+                    printf("%c", ch);
+                    ch=getc(fp1);
+                  }
+                fclose(fp1);
+                fclose(fp2);
               }
-            fclose(fp1);
-            fclose(fp2);
+            else
+              {
+                printf("Your file to read from does not exist.  Please reselect.  I am talented, but I cannot copy nothing.\n");
+              }
           }
 //checks input for "delete" and removes the file entirely.
         else if (!strncmp(fullinput, "delete", 6))
