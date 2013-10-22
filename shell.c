@@ -3,109 +3,173 @@
 // The program also allows a user to exit the loop and has errors if incorrect input is entered.
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
 
-//Function Defintions
-void error(char* fullinput);
-bool InputIsExit(char* fullinput);
-int InputIsType(char* fullinput);
-int InputIsCopy(char* fullinput);
-int InputIsDelete(char* fullinput);
-int InputIsExecutable(char* fullinput);
-void type(char* filename);
-char* FileName1(char* fullinput);
-char* FileName2(char* fullinput);
-void copy(char* source, char* destination);
-void delete(char* filename);
-void execute(char* filename);
-
-int main(int argc, char** argv) {
-  printf("This is a program to take your input and do something awesome with it!");
-  char fullinput[100] = {0};
-  while (true) {
-    printf("\nPlease enter a command>> ");
-    scanf("%s", fullinput);
-    if (InputIsExit(fullinput)) {
-      break;
-    } else if (InputIsType(fullinput)) {
-      type(FileName1(fullinput));
-    } else if (InputIsCopy(fullinput)) {
-      copy(FileName1(fullinput), FileName2(fullinput));
-    } else if (InputIsDelete(fullinput)) {
-      delete(FileName1(fullinput));
-    } else if (InputIsExecutable(fullinput)) {
-      execute(fullinput);
-    } else {
-      error(fullinput);
-    }
-  }
-  return 0;
-}
-
-// Displays an error message if mistake
-void error(char* fullinput) {
-  printf("You screwed something up...try again: %s", fullinput);
-}
-
-// Returns 1 if input is "exit"
-bool InputIsExit(char* fullinput) {
-  // strcmp returns 0 when strings are equal
-  return !strcmp(fullinput, "exit");
-}
-
-// Returns 1 if the first word in the input is "type"
-int InputIsType(char* fullinput) {
-  // TODO
-  return 0;
-}
-
-// Returns 1 if the first word in the input is "copy"
-int InputIsCopy(char* fullinput) {
-  // TODO
-  return 0;
-}
-
-// Returns 1 if the first word in the input is "delete"
-int InputIsDelete(char* fullinput) {
-  // TODO
-  return 0;
-}
-
-// Returns 1 if the input is an actual file that can be executed
-int InputIsExecutable(char* fullinput) {
-  // TODO
-  return 0;
-}
-
-// Prints the contents of the chosen file to the command prompt
-void type(char* fullinput) {
-  // TODO
-}
-
-// Copies one file to another file
-void copy(char* source, char* destination) {
-  // TODO
-}
-
-// Deletes a file
-void delete(char* filename) {
-  // TODO
-}
-
-// Executes a program named `filename`
-void execute(char* filename) {
-  // TODO
-}
-
-// Returns the first file from user's input
-char* FileName1(char* fullinput) {
-  // TODO
-  return 0;
-}
-
-// Returns the second file from user's input
-char* FileName2(char* fullinput) {
-  // TODO
+int main(int argc, char** argv)
+  {
+    printf("This is a program to take your input and do something awesome with it!");
+    char fullinput[100];
+    bool whilebreak = true;
+    while (whilebreak)
+      {
+        fullinput[100] = '\0';
+        printf("\nPlease enter a command>> ");
+        fgets(fullinput, 100, stdin);
+        if (!strncmp(fullinput, "exit", 4))
+          {
+            break;
+            whilebreak = false;
+          }
+        else if (!strncmp(fullinput, "type", 4))
+          {
+            int num = 0;
+            char *firstnull = (char *) malloc(100);
+            int length1 = 0;
+            int length2 = 0;
+            char *parse = (char *) malloc(100);
+            char *eachword[100];
+            parse = strtok(fullinput, " ");
+            while (parse != NULL)
+              {
+                eachword[num] = (char *) malloc(100);
+                firstnull = strchr (parse, 0);
+                length1 = strlen(firstnull);
+                length2 = strlen(parse);
+                strncpy(eachword[num],parse,length2-length1-1);
+                parse = strtok(NULL, " ");
+                num++;
+              }
+            printf("Here are the contents of %s\n", eachword[1]);
+            FILE *fp = fopen(eachword[1], "r");
+            char ch;
+            ch = getc(fp);
+            while (ch != EOF)
+              {
+                printf("%c", ch);
+                ch = getc(fp);
+              }
+            fclose(fp);
+          }
+        else if (!strncmp(fullinput, "copy", 4))
+          {
+            int num = 0;
+            char *firstnull = (char *) malloc(100);
+            int length1 = 0;
+            int length2 = 0;
+            char *parse = (char *) malloc(100);
+            char *eachword[100];
+            parse = strtok(fullinput, " ");
+            while (parse != NULL)
+              {
+                eachword[num] = (char *) malloc(100);
+                firstnull = strchr (parse, 0);
+                length1 = strlen(firstnull);
+                length2 = strlen(parse);
+                strncpy(eachword[num],parse,length2-length1-num+1);
+                parse = strtok(NULL, " ");
+                num++;
+              }
+            printf("The contents of %s ", eachword[1]);
+            printf("will be transferred to %s.\nBelow are the contents that will be moved.\n", eachword[2]);
+            FILE *fp1 = fopen(eachword[1], "r");
+            FILE *fp2 = fopen(eachword[2], "w");
+            char ch=getc(fp1);
+            while (ch != EOF)
+              {
+                putc(ch, fp2);
+                printf("%c", ch);
+                ch=getc(fp1);
+              }
+            fclose(fp1);
+            fclose(fp2);
+          }
+        else if (!strncmp(fullinput, "delete", 6))
+          {
+            int num = 0;
+            char *firstnull = (char *) malloc(100);
+            int length1 = 0;
+            int length2 = 0;
+            char *parse = (char *) malloc(100);
+            char *eachword[100];
+            parse = strtok(fullinput, " ");
+            while (parse != NULL)
+              {
+                eachword[num] = (char *) malloc(100);
+                firstnull = strchr (parse, 0);
+                length1 = strlen(firstnull);
+                length2 = strlen(parse);
+                strncpy(eachword[num],parse,length2-length1-1);
+                parse = strtok(NULL, " ");
+                num++;
+              }
+            printf("%s will be deleted.  I hope it was nothing important.\n", eachword[1]);
+            FILE *fp = fopen(eachword[1], "r");
+            int removal = 0;
+            removal = remove(eachword[1]);
+            if (removal == 0)
+              {
+                printf("%s has been deleted.\n", eachword[1]);
+              }
+            else
+              { 
+                printf("Something went wrong.  %s has not been deleted.\n", eachword[1]);
+              }
+          }
+        else
+          {
+            int num = 0;
+            char *firstnull = (char *) malloc(100);
+            int length1 = 0;
+            int length2 = 0;
+            char *parse = (char *) malloc(100);
+            char *eachword[100];
+            bool fileexist = false;
+            parse = strtok(fullinput, " ");
+            while (parse != NULL)
+              {
+                eachword[num] = (char *) malloc(100);
+                firstnull = strchr (parse, 0);
+                length1 = strlen(firstnull);
+                length2 = strlen(parse);
+                strncpy(eachword[num],parse,length2-length1-1);
+                parse = strtok(NULL, " ");
+                num++;
+              }
+            FILE *fp = fopen(eachword[0], "r");
+            if (fp)
+              {
+                fclose(fp);
+                fileexist = true;
+              }
+            if (fileexist = true)
+              {
+                printf("The program %s will execute now.\n", eachword[0]);
+                pid_t pid = fork();
+                int parentwait;
+                char args[1][1];
+                args[0][0] = '\0';
+                if (pid < 0)
+                  {
+                    printf("There was an error with the fork process.  The program is ending now.\n");
+                    return;
+                  }
+                else if (pid == 0)
+                  {
+                    execvp (eachword[0], eachword);
+                    exit(0);
+                  }
+                else
+                  {
+                    waitpid(-1, NULL, 0);
+                  }
+              }
+            else
+              {
+                printf("You screwed something up...try again: %s", fullinput);
+              }
+          }
+      }
   return 0;
 }
