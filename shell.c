@@ -143,7 +143,7 @@ int main(int argc, char** argv)
                 fclose(fp);
                 fileexist = true;
               }
-            if (fileexist = true)
+            if (fileexist == true)
               {
                 printf("The program %s will execute now.\n", eachword[0]);
                 pid_t pid = fork();
